@@ -1,0 +1,21 @@
+apiVersion: carto.run/v1alpha1
+kind: Deliverable
+metadata:
+  namespace: prod
+  name: tanzu-petclinic
+  labels:
+    app.kubernetes.io/component: deliverable
+    app.tanzu.vmware.com/deliverable-type: web
+    carto.run/workload-name: tanzu-petclinic
+    carto.run/workload-namespace: prod
+spec:
+  params:
+  - name: gitops_ssh_secret
+    value: git-ssh
+  - name: gitops_sub_path
+    value: config/dev/tanzu-petclinic
+  source:
+    git:
+      url: ssh://git@github.com/ezYakaEagle442/petclinic.git
+      ref:
+        branch: main
