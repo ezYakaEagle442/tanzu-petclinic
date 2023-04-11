@@ -9,16 +9,53 @@
 	<description>Spring PetClinic Config Server</description>
 
     <parent>
-        <groupId>org.springframework.samples</groupId>
-        <artifactId>spring-petclinic-microservices</artifactId>
-        <version>2.6.13</version>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.6.13</version> <!-- /!\ Bug in Netty with Spring Boot 2.6.6, see https://github.com/netty/netty/issues/12343 -->
         <relativePath />
     </parent>
 
     <properties>
-        <docker.image.exposed.port>8888</docker.image.exposed.port>
-        <docker.image.dockerfile.dir>${basedir}/../docker</docker.image.dockerfile.dir>
+
+        <spring.jmx.enabled>true</spring.jmx.enabled>
+        <!-- 
+            https://docs.spring.io/spring-boot/docs/2.7.3/reference/html/application-properties.html#application-properties.core.spring.jmx.enabled
+            https://learn.microsoft.com/en-us/azure/spring-apps/how-to-prepare-app-deployment?tabs=basic-standard-tier&pivots=programming-language-java
+            You must specify spring.jmx.enabled=true in your configuration property. Otherwise, metrics can't be visualized in the Azure portal.
+            
+            https://docs.spring.io/spring-cloud/docs/2021.0.4/reference/html/configprops.html
+            Don't specify spring.cloud.config.enabled=false in your bootstrap configuration. Otherwise, your application stops working with Config Server.
+            It is true by default
+        -->    
+        
+        <!-- 
+        https://github.com/Azure/azure-sdk-for-java/wiki/Spring-Versions-Mapping#which-version-of-spring-cloud-azure-should-i-use 
+        https://spring.io/projects/spring-cloud#adding-spring-cloud-to-an-existing-spring-boot-application 
+        2021.0.3 should be used, NOT 2022.0.0-M3
+        -->
+        <spring-cloud.version>2021.0.4</spring-cloud.version>
+        <spring-cloud-azure.version>4.5.0</spring-cloud-azure.version>
+        <spring.jmx.enabled>true</spring.jmx.enabled>
+
+        <!-- 
+        https://googlecloudplatform.github.io/spring-cloud-gcp/reference/html/index.html#compatibility-with-spring-project-versions
+        https://github.com/GoogleCloudPlatform/spring-cloud-gcp
+        -->
+        <!-- https://docs.spring.io/spring-boot/docs/2.7.8/reference/html/getting-started.html#getting-started.system-requirements Java 17 is supported-->
+        <spring-boot.version>2.6.13</spring-boot.version> <!-- /!\ Bug in Netty with Spring Boot 2.6.6, see https://github.com/netty/netty/issues/12343 -->
+        <spring-cloud-config.version>3.1.4</spring-cloud-config.version>
+
+        <java.version>11</java.version>
+        <maven.compiler.release>11</maven.compiler.release>
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
+
+        <assertj.version>3.17.1</assertj.version>
+        <lombok.version>1.18.22</lombok.version>
+        <chaos-monkey-spring-boot.version>2.6.1</chaos-monkey-spring-boot.version>
+        
     </properties>
+
 
 	<dependencies>
         <!-- Spring Boot -->
@@ -36,10 +73,20 @@
             <scope>test</scope>
         </dependency>
 
+        <!-- https://docs.microsoft.com/en-us/azure/developer/java/spring-framework/spring-cloud-azure?tabs=maven#bill-of-material-bom -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-dependencies</artifactId>
+            <version>${spring-cloud.version}</version>
+            <type>pom</type>
+            <scope>import</scope>                
+        </dependency>
+
         <!-- Spring Cloud -->
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-config-server</artifactId>
+            <version>${spring-cloud-config.version}</version>
 		</dependency>
 
         <!-- Third-party librairies -->
