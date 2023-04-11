@@ -18,7 +18,7 @@ spec:
     subPath: spring-petclinic-config-server
   env:
   - name: SPRING_PROFILES_ACTIVE
-    value: "prod"
+    value: "default"
   build:
     env:
       - name: BP_JVM_VERSION
