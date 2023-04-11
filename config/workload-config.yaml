@@ -2,7 +2,7 @@ apiVersion: carto.run/v1alpha1
 kind: Workload
 metadata:
   namespace: tap-dev
-  name: tanzu-petclinic
+  name: tanzu-petclinic-config
   labels:
     apps.tanzu.vmware.com/workload-type: web 
     apps.tanzu.vmware.com/has-tests: "true"
@@ -12,7 +12,7 @@ metadata:
 spec:
   source:
     git:
-      url: ssh://git@github.com/ezYakaEagle442/tanzu-petclinic
+      url: https://github.com/ezYakaEagle442/tanzu-petclinic # ssh://git@github.com/ezYakaEagle442/tanzu-petclinic ==> TAP on AKS need GH SSH Keys to access the repo in that case
       ref:
         branch: main
     subPath: spring-petclinic-config-server
